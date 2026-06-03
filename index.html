@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>TREASURE HUNT: Code & Mind Challenge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0a0e17 0%, #141a28 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Poppins', 'Fira Code', 'Courier New', monospace;
+            padding: 1.5rem;
+        }
+
+        .quest-container {
+            max-width: 850px;
+            width: 100%;
+            background: rgba(10, 14, 23, 0.75);
+            backdrop-filter: blur(3px);
+            border-radius: 2.5rem;
+            padding: 1.2rem;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 180, 70, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quest-panel {
+            background: #0b0f18e0;
+            border-radius: 2rem;
+            padding: 1.8rem 1.8rem 2.2rem;
+            box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6), 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 200, 100, 0.25);
+        }
+
+        .treasure-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px dashed #f3b33d;
+            padding-bottom: 0.8rem;
+        }
+
+        .treasure-header h1 {
+            font-size: 2rem;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #FFD966, #FFA559);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .treasure-header p {
+            color: #bcbcda;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-top: 0.3rem;
+        }
+
+        .question-card {
+            background: #0c101ee0;
+            border-radius: 1.8rem;
+            padding: 1.5rem;
+            margin-bottom: 1.8rem;
+            border-left: 6px solid #f3b33d;
+            transition: all 0.2s;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #f3b33d30;
+            backdrop-filter: blur(4px);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #ffcd7e;
+            border: 1px solid #f3b33d60;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .question-text {
+            font-size: 1.45rem;
+            font-weight: 600;
+            color: #f0f3fa;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+            word-break: break-word;
+        }
+
+        .question-detail {
+            background: #00000040;
+            padding: 0.8rem 1rem;
+            border-radius: 1.2rem;
+            margin: 1rem 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #cbd5ff;
+            border: 1px solid #2a2f42;
+            overflow-x: auto;
+        }
+
+        pre {
+            font-family: 'Fira Code', monospace;
+            background: #010418;
+            padding: 12px;
+            border-radius: 12px;
+            margin: 0;
+            font-size: 0.85rem;
+            color: #e2e8ff;
+        }
+
+        .options-area {
+            margin: 1rem 0 0.5rem 0;
+            background: #00000030;
+            border-radius: 1rem;
+            padding: 0.8rem;
+        }
+
+        .option-label {
+            display: inline-block;
+            background: #1e243b;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            margin: 0.3rem 0.5rem 0.3rem 0;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #ffddb0;
+            border: 1px solid #3a415e;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            font-size: 1rem;
+            background: #07090f;
+            border: 2px solid #2f354a;
+            border-radius: 60px;
+            color: #FFE5B4;
+            font-family: 'Fira Code', monospace;
+            outline: none;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+
+        .answer-input:focus {
+            border-color: #f3b33d;
+            box-shadow: 0 0 8px #f3b33d80;
+        }
+
+        .submit-btn {
+            background: linear-gradient(95deg, #f3b33d, #e67e22);
+            border: none;
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 1rem;
+            border-radius: 60px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #1e1a2f;
+            font-family: inherit;
+            cursor: pointer;
+            transition: transform 0.1s, filter 0.2s;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 0 #9b4a0e;
+        }
+
+        .submit-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #9b4a0e;
+        }
+
+        .feedback {
+            margin-top: 1.2rem;
+            padding: 0.8rem;
+            border-radius: 60px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            background: #00000050;
+            transition: all 0.2s;
+        }
+
+        .feedback.error {
+            background: #ff4d4d20;
+            color: #ffaeae;
+            border-left: 4px solid #ff5e5e;
+        }
+
+        .feedback.success {
+            background: #2ecc7140;
+            color: #baffe0;
+            border-left: 4px solid #2ecc71;
+        }
+
+        .next-hint {
+            background: #191e2c;
+            border-radius: 1.5rem;
+            padding: 1rem 1.4rem;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            border: 1px solid #f3b33d70;
+        }
+
+        .final-clue-box {
+            margin-top: 1.5rem;
+            background: radial-gradient(ellipse at top, #2a2418, #0c0e16);
+            border-radius: 1.8rem;
+            padding: 1.8rem;
+            text-align: center;
+            border: 2px solid gold;
+            animation: glowPulse 1.5s infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 0px 0px #f3b33d40; border-color: #f3b33d70; }
+            100% { box-shadow: 0 0 18px 4px #f3b33d; border-color: #ffcc66; }
+        }
+
+        .congrats-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(145deg, #FFE6B0, #FFB347);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.75rem;
+        }
+
+        .secret-clue {
+            font-family: 'Fira Code', monospace;
+            background: #000000aa;
+            padding: 1rem;
+            border-radius: 1rem;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            color: #ffdd99;
+        }
+
+        /* Dari poem styling */
+        .dari-poem {
+            margin: 1.5rem 0;
+            padding: 1.2rem;
+            background: #1a1f2eaa;
+            border-radius: 1.2rem;
+            border-right: 4px solid #f3b33d;
+            font-family: 'Segoe UI', 'Tahoma', 'Noto Sans Arabic', 'Traditional Arabic', serif;
+            text-align: center;
+        }
+
+        .poem-title {
+            font-size: 1rem;
+            color: #ffcd7e;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .poem-lines {
+            font-size: 1.1rem;
+            line-height: 2;
+            color: #f5e6c4;
+            white-space: pre-line;
+            direction: rtl;
+            font-family: 'Noto Sans Arabic', 'Tahoma', 'Segoe UI', serif;
+        }
+
+        .poem-translation {
+            font-size: 0.8rem;
+            color: #a9b7e6;
+            margin-top: 0.8rem;
+            font-style: italic;
+            direction: ltr;
+        }
+
+        hr {
+            border-color: #f3b33d30;
+            margin: 1rem 0;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #5f6a8a;
+            margin-top: 1rem;
+        }
+
+        .info-tip {
+            font-size: 0.75rem;
+            color: #b9c3e6;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+<div class="quest-container" id="appRoot"></div>
+
+<script>
+    // ============================================================
+    // TREASURE HUNT CHALLENGES
+    // Q1: MANGO -> NZOTH  | APPLE -> BQQMF
+    // Q2: C++ sizeof output = 45
+    // Q3: 5th letter right of 10th letter from left = O
+    
+    const QUESTIONS = [
+        {   
+            text: "🔑 If MANGO is written as NZOTH, how is APPLE written?",
+            details: `<div class="options-area">
+                <span class="option-label">A) BQQMF</span>
+                <span class="option-label">B) BQQNG</span>
+                <span class="option-label">C) BQQMH</span>
+                <span class="option-label">D) ZOOKD</span>
+            </div>
+            <div class="info-tip">💡 Observe the coding pattern used in MANGO → NZOTH, then apply same logic to APPLE.</div>`,
+            answerKey: "BQQMF",
+            hintMsg: "Pattern: each letter maps with a specific shift → APPLE becomes BQQMF."
+        },
+        {   
+            text: "💻 CODE CHALLENGE: What is the output of the following C++ program?",
+            details: `<pre>#include &lt;iostream&gt;
+using namespace std;
+int main() {
+    int a = 5;
+    float b;
+    cout << sizeof(++a + b);
+    cout << a;
+    return 0;
+}</pre>
+<div class="info-tip">⚠️ Tip: sizeof() operator does NOT evaluate its operand at runtime. The expression inside sizeof determines type only.</div>`,
+            answerKey: "45",
+            hintMsg: "sizeof(++a + b) → type is float → size 4 bytes. ++a not evaluated, a remains 5. Output: 4 then 5 → '45'."
+        },
+        {   
+            text: "🧠 MENTAL ABILITY: What is the 5th letter to the right of the 10th letter from the left in the English alphabet?",
+            details: `<div class="info-tip">📖 Alphabet positions: A=1, B=2 ... Z=26.<br>
+            Step 1: 10th letter from left = ?<br>
+            Step 2: Move 5 letters to the right → find final letter.
+            </div>`,
+            answerKey: "O",
+            hintMsg: "10th letter = J (position 10). 5 letters to the right: K,L,M,N,O → Answer is O."
+        }
+    ];
+
+    let currentIndex = 0;
+    let completed = false;
+
+    const appContainer = document.getElementById("appRoot");
+
+    function isAnswerCorrect(userAnswer, correctKey) {
+        if (!userAnswer) return false;
+        let normalizedUser = userAnswer.trim().toUpperCase();
+        let normalizedCorrect = correctKey.trim().toUpperCase();
+        if (normalizedUser === normalizedCorrect) return true;
+        if (!isNaN(parseFloat(normalizedUser)) && !isNaN(parseFloat(normalizedCorrect))) {
+            if (parseFloat(normalizedUser) === parseFloat(normalizedCorrect)) return true;
+        }
+        return false;
+    }
+
+    // Beautiful Dari poem for the final congratulation
+    function getDariPoem() {
+        return `
+            <div class="dari-poem">
+                <div class="poem-title">🍃🍃</div>
+                <div class="poem-lines">
+                    «از شیراز مردی برخاست،<br>
+                    که سخنش هنوز زنده است.<br>
+                   گلستان و بوستان از او یادگار،<br>
+                   نامش در دل هر کتاب‌دوست پایدار.<br>
+                   اگر خواهی راه گنج را بیابی،<br>
+                   نخست صاحب این سخن را دریابی.<br>
+                   چون نامش بر تو آشکار شود،<br>
+                   راه بعدی نیز پدیدار شود.<br>
+                   به قفسه‌ای برو که اندیشه را جان دهد،<br>
+                   و از هوشِ نو و دانشِ نو نشان دهد.»
+                </div>
+            </div>
+        `;
+    }
+
+    function render() {
+        if (completed) {
+            // Final stage with Congratulations + Dari poem + Treasure clue
+            const treasureClue = "🔮 CLUE: 'This is the clue for your next and the final stage. Follow your Map' 🔮";
+            appContainer.innerHTML = `
+                <div class="quest-container" style="background: transparent; backdrop-filter: blur(0px); padding:0;">
+                    <div class="quest-panel">
+                        <div class="final-clue-box">
+                            <div class="congrats-text">🏆 CONGRATULATIONS! 🏆</div>
+                            <div style="font-size:1rem; color:#f5e6b0; margin:0.5rem 0;">You have conquered all three challenges!</div>
+                            ${getDariPoem()}
+                            <hr style="width:80%; margin:1rem auto;">
+                            <div class="secret-clue">
+                                ✨ ${treasureClue} ✨
+                            </div>
+                            <div style="margin-top:1.2rem; font-size:0.85rem; color:#bbaaff;">
+                                Present this clue to proceed to the next stage. Great work, hunters!
+                            </div>
+                        </div>
+                        <footer>🏁 The treasure hunt continues → follow the clue</footer>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        const q = QUESTIONS[currentIndex];
+        if (!q) return;
+
+        let detailsHtml = q.details ? `<div class="question-detail">${q.details}</div>` : "";
+        const uniqueInputId = `ans-input-${currentIndex}`;
+        const feedbackId = `fb-${currentIndex}`;
+        
+        const html = `
+            <div class="quest-panel">
+                <div class="treasure-header">
+                    <h1>⚔️ TREASURE CODEX ⚔️</h1>
+                    <p>Challenge ${currentIndex+1} of ${QUESTIONS.length} • ${currentIndex === 0 ? "MENTAL (Cipher)" : (currentIndex === 1 ? "CODE ANALYSIS" : "MENTAL ABILITY")}</p>
+                </div>
+                <div class="question-card">
+                    <div class="badge">🔍 ${currentIndex === 0 ? "PATTERN BREAKER" : (currentIndex === 1 ? "C++ DETECTIVE" : "ALPHABET MASTER")}</div>
+                    <div class="question-text">${q.text}</div>
+                    ${detailsHtml}
+                    <div class="answer-area">
+                        <input type="text" id="${uniqueInputId}" class="answer-input" placeholder="Enter your answer..." autocomplete="off">
+                        <button id="submit-${currentIndex}" class="submit-btn">⚡ VERIFY & UNLOCK ⚡</button>
+                        <div id="${feedbackId}" class="feedback"></div>
+                    </div>
+                </div>
+                <div class="next-hint" style="justify-content:center; background:#111624;">
+                    <span style="color:#b9ad7a;">✨ Correct answer reveals next riddle ✨</span>
+                </div>
+                <footer>💀 Wrong answer shows "Sorry, it is not the answer" — persist, champion!</footer>
+            </div>
+        `;
+        
+        appContainer.innerHTML = `<div class="quest-container">${html}</div>`;
+        
+        const submitBtn = document.getElementById(`submit-${currentIndex}`);
+        const answerInput = document.getElementById(uniqueInputId);
+        const feedbackDiv = document.getElementById(feedbackId);
+        
+        if (submitBtn && answerInput) {
+            const newBtn = submitBtn.cloneNode(true);
+            submitBtn.parentNode.replaceChild(newBtn, submitBtn);
+            
+            newBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const userAnswer = answerInput.value;
+                if (isAnswerCorrect(userAnswer, q.answerKey)) {
+                    feedbackDiv.innerHTML = `✅ CORRECT! ${q.hintMsg ? q.hintMsg : "Great job!"} ✅`;
+                    feedbackDiv.className = "feedback success";
+                    newBtn.disabled = true;
+                    answerInput.disabled = true;
+                    
+                    if (currentIndex + 1 < QUESTIONS.length) {
+                        feedbackDiv.innerHTML += `<span style="display:inline-block; margin-left:10px;"> ➡️ Loading next question...</span>`;
+                        setTimeout(() => {
+                            currentIndex++;
+                            render();
+                        }, 1000);
+                    } else {
+                        feedbackDiv.innerHTML += `<span style="display:block; margin-top:8px;">🌟 Final answer accepted! Preparing grand prize... 🌟</span>`;
+                        setTimeout(() => {
+                            completed = true;
+                            render();
+                        }, 1300);
+                    }
+                } else {
+                    feedbackDiv.innerHTML = `❌ SORRY, it is not the answer. Try again, adventurer! ❌`;
+                    feedbackDiv.className = "feedback error";
+                    answerInput.style.borderColor = "#ff5e5e";
+                    setTimeout(() => { answerInput.style.borderColor = ""; }, 500);
+                    setTimeout(() => { answerInput.style.transform = ""; }, 300);
+                }
+            });
+            
+            answerInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const btn = document.getElementById(`submit-${currentIndex}`);
+                    if (btn) btn.click();
+                }
+            });
+        }
+    }
+    
+    render();
+</script>
+</body>
+</html>
